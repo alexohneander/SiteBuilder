@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SiteBuilder.DataEntity\SiteBuilder.DataEntity.csproj" />
+    <ProjectReference Include="..\SiteBuilder.Tenants\SiteBuilder.Tenants.csproj" />
+  </ItemGroup>
+
+</Project>
