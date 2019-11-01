@@ -36,5 +36,21 @@ namespace SiteBuilder.Tenants.Helpers
             
             return settings;
         }
+        
+        public static Tenant GetTenantById(this Guid tenantId)
+        {
+            Tenant tenant = new Tenant();
+            using (var db = new SiteBuilderDbContext())
+            {
+                var tmp = db.Tenants.Where(t => t.TenantId == tenantId).FirstOrDefault();
+
+                if (tmp != null)
+                {
+                    tenant = tmp;
+                }
+            }
+
+            return tenant;
+        }
     }
 }
