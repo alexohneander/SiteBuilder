@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+SiteBuilder.Core/sitebuilder.db-wal
+SiteBuilder.Core/sitebuilder.db-shm
+SiteBuilder.Core/sitebuilder.db
