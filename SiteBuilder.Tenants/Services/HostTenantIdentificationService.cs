@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using SiteBuilder.DataEntity;
 using SiteBuilder.DataEntity.Models;
 using SiteBuilder.Tenants.Configuration;
+using SiteBuilder.Tenants.Helpers;
 using SiteBuilder.Tenants.Interfaces;
 
 namespace SiteBuilder.Tenants.Services
@@ -30,14 +33,13 @@ namespace SiteBuilder.Tenants.Services
 
         public Tenant GetCurrentTenant(HttpContext context)
         {
-            if (!this._tenants.Tenants.TryGetValue(context.Request.Host.Host, out string tenantId))
+            if (!this._tenants.Tenants.TryGetValue(context.Request.Host.Host, out string tenantName))
             {
-                tenantId = this._tenants.Default;
+                tenantName = this._tenants.Default;
             }
 
-
-            Tenant tenant = new Tenant();
-            tenant.Name = tenantId;
+            // Get Tenant by name
+            Tenant tenant = TenantHelper.GetAllTenants().Where(t => t.Name == tenantName).FirstOrDefault();
 
             return tenant;
         }

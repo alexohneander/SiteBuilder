@@ -2,35 +2,40 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SiteBuilder.Core.Models;
 using SiteBuilder.Tenants.Interfaces;
 using SiteBuilder.DataEntity.Models;
+using Microsoft.AspNetCore.Http;
+using SiteBuilder.Core.Helpers;
 
 namespace SiteBuilder.Core.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static Tenant tenent;
+        private static Tenant tenant;
 
         public HomeController(ILogger<HomeController> logger, ITenantService service)
         {
             _logger = logger;
-            tenent = new Tenant();
-            tenent = service.GetCurrentTenant();
+
+            tenant = new Tenant();
+            tenant = service.GetCurrentTenant();
         }
 
         public IActionResult Index()
         {
-            return View(tenent);
+            HttpContext.Session.SetObjectAsJson("Tenant", tenant);
+            return View();
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return View(tenant);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

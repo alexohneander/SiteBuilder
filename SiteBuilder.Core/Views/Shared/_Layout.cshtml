@@ -1,9 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@using SiteBuilder.Tenants
+@using SiteBuilder.Tenants.Helpers
+@using SiteBuilder.DataEntity.Models
+@using SiteBuilder.Core.Helpers
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@*@model SiteBuilder.DataEntity.Models.Tenant*@
+
+@{
+    Tenant tenant = new Tenant();
+    tenant.TenantId = Guid.Parse("E8BCB64E-1143-46E7-9CD8-420D686C124A");
+
+
+    var model = Context.Session.GetObjectFromJson<Tenant>("Tenant");
+    if (model != null)
+    {
+        tenant = model;
+    }
+
+    var settings = tenant.GetSiteSettings();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SiteBuilder.Core</title>
+    <title>@ViewData["Title"] - @settings.Title</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,7 +35,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SiteBuilder.Core</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@tenant.Name</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -37,7 +61,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - SiteBuilder.Core - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - @tenant.Name - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
