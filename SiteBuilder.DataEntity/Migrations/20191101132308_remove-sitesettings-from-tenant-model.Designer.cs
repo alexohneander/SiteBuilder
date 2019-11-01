@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteBuilder.DataEntity;
 
 namespace SiteBuilder.DataEntity.Migrations
 {
     [DbContext(typeof(SiteBuilderDbContext))]
-    partial class SiteBuilderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191101132308_remove-sitesettings-from-tenant-model")]
+    partial class removesitesettingsfromtenantmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +41,7 @@ namespace SiteBuilder.DataEntity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId")
-                        .IsUnique();
+                    b.HasIndex("TenantId");
 
                     b.ToTable("SiteSettings");
                 });
@@ -90,8 +91,8 @@ namespace SiteBuilder.DataEntity.Migrations
             modelBuilder.Entity("SiteBuilder.DataEntity.Models.SiteSettings", b =>
                 {
                     b.HasOne("SiteBuilder.DataEntity.Models.Tenant", "Tenant")
-                        .WithOne("Settings")
-                        .HasForeignKey("SiteBuilder.DataEntity.Models.SiteSettings", "TenantId")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -99,7 +100,7 @@ namespace SiteBuilder.DataEntity.Migrations
             modelBuilder.Entity("SiteBuilder.DataEntity.Models.User", b =>
                 {
                     b.HasOne("SiteBuilder.DataEntity.Models.Tenant", "Tenant")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("TenantId1");
                 });
 #pragma warning restore 612, 618

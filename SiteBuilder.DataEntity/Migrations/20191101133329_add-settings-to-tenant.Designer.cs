@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteBuilder.DataEntity;
 
 namespace SiteBuilder.DataEntity.Migrations
 {
     [DbContext(typeof(SiteBuilderDbContext))]
-    partial class SiteBuilderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191101133329_add-settings-to-tenant")]
+    partial class addsettingstotenant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

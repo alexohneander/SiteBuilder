@@ -16,5 +16,13 @@ namespace SiteBuilder.DataEntity
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
                 => options.UseSqlite("Data Source=sitebuilder.db");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tenant>()
+                .HasOne(a => a.Settings)
+                .WithOne(b => b.Tenant)
+                .HasForeignKey<SiteSettings>(b => b.TenantId);
+        }
     }
 }
