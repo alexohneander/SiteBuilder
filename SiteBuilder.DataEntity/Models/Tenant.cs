@@ -13,5 +13,6 @@ namespace SiteBuilder.DataEntity.Models
         public string Domain { get; set; }
 
         public List<User> Users { get; } = new List<User>();
+        public SiteSettings SiteSettings { get; set; }
     }
 }
