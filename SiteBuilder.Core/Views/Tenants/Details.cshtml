@@ -1,7 +1,10 @@
-﻿@model SiteBuilder.DataEntity.Models.Tenant
+﻿@using SiteBuilder.DataEntity.Models
+@using SiteBuilder.Tenants.Helpers
+@model SiteBuilder.DataEntity.Models.Tenant
 
 @{
     ViewData["Title"] = "Details";
+    var settings = (Model as Tenant).GetSiteSettings();
 }
 
 <h1>Details</h1>
@@ -10,19 +13,36 @@
     <h4>Tenant</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Domain)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Domain)
         </dd>
     </dl>
+    @if (settings != null)
+    {
+        <dl class="row">
+            <dt class="col-sm-2">
+               Title
+            </dt>
+            <dd class="col-sm-10">
+                @settings.Title
+            </dd>
+            <dt class="col-sm-2">
+                Description
+            </dt>
+            <dd class="col-sm-10">
+                @settings.Description
+            </dd>
+        </dl>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.TenantId">Edit</a> |

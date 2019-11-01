@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SiteBuilder.Core.Models;
 using SiteBuilder.DataEntity;
 using SiteBuilder.DataEntity.Models;
+using SiteBuilder.Tenants.Helpers;
 
 namespace SiteBuilder.Core.Controllers
 {
@@ -58,8 +60,18 @@ namespace SiteBuilder.Core.Controllers
         {
             if (ModelState.IsValid)
             {
+                SiteSettings setting = new SiteSettings();
+                
+                // Relations
                 tenant.TenantId = Guid.NewGuid();
+                setting.Id = Guid.NewGuid();
+                setting.TenantId = tenant.TenantId;
+                setting.Tenant = tenant;
+
+                // Save Data
                 _context.Add(tenant);
+                _context.Add(setting);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -79,7 +91,20 @@ namespace SiteBuilder.Core.Controllers
             {
                 return NotFound();
             }
-            return View(tenant);
+
+            TenantViewModel vm = new TenantViewModel();
+            vm.Domain = tenant.Domain;
+            vm.Name = tenant.Name;
+            vm.TenantId = tenant.TenantId;
+
+            var settings = tenant.GetSiteSettings();
+            if(settings != null)
+            {
+                vm.SettingsTitle = settings.Title;
+                vm.SettingsDescription = settings.Description;
+            }
+
+            return View(vm);
         }
 
         // POST: Tenants/Edit/5
@@ -87,9 +112,11 @@ namespace SiteBuilder.Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TenantId,Name,Domain")] Tenant tenant)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TenantId,Name,Domain,SettingsTitle,SettingsDescription")] TenantViewModel vm)
         {
-            if (id != tenant.TenantId)
+            var tenant = vm.TenantId.GetTenantById();
+
+            if (tenant == null)
             {
                 return NotFound();
             }
@@ -98,12 +125,26 @@ namespace SiteBuilder.Core.Controllers
             {
                 try
                 {
+                    
+                    var setting = tenant.GetSiteSettings();
+
+                    tenant.Name = vm.Name;
+                    tenant.Domain = vm.Domain;
+
+                    // Set settings
+                    if(setting.Id != Guid.Empty)
+                    {
+                        setting.Title = vm.SettingsTitle;
+                        setting.Description = vm.SettingsDescription;
+                        _context.Update(setting);
+                    }
+
                     _context.Update(tenant);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TenantExists(tenant.TenantId))
+                    if (!TenantExists(vm.TenantId))
                     {
                         return NotFound();
                     }
@@ -114,7 +155,7 @@ namespace SiteBuilder.Core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tenant);
+            return View(vm);
         }
 
         // GET: Tenants/Delete/5
@@ -141,7 +182,14 @@ namespace SiteBuilder.Core.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var tenant = await _context.Tenants.FindAsync(id);
+            var settings = tenant.GetSiteSettings();
+
             _context.Tenants.Remove(tenant);
+            if(settings.Id != Guid.Empty)
+            {
+                _context.SiteSettings.Remove(settings);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

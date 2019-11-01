@@ -1,4 +1,4 @@
-﻿@model SiteBuilder.DataEntity.Models.Tenant
+﻿@model SiteBuilder.Core.Models.TenantViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -22,6 +22,17 @@
                 <label asp-for="Domain" class="control-label"></label>
                 <input asp-for="Domain" class="form-control" />
                 <span asp-validation-for="Domain" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SettingsTitle" class="control-label"></label>
+                <input asp-for="SettingsTitle" class="form-control" />
+                <span asp-validation-for="SettingsTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SettingsDescription" class="control-label"></label>
+                <input asp-for="SettingsDescription" class="form-control" />
+                <span asp-validation-for="SettingsDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
