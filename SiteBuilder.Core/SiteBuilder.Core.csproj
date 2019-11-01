@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SiteBuilder.Tenants\SiteBuilder.Tenants.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

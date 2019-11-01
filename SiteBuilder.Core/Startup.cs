@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using SiteBuilder.DataEntity;
 using SiteBuilder.Tenants.Interfaces;
 using SiteBuilder.Tenants.Services;
+using SiteBuilder.Tenants.Middleware;
 
 namespace SiteBuilder.Core
 {
@@ -63,6 +64,8 @@ namespace SiteBuilder.Core
 
             app.UseAuthorization();
             app.UseSession();
+
+            app.UseTenantContext();
 
             app.UseEndpoints(endpoints =>
             {

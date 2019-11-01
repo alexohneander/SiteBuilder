@@ -15,19 +15,14 @@ namespace SiteBuilder.Core.Controllers
     public class TenantsController : Controller
     {
         private readonly SiteBuilderDbContext _context;
-        private static Tenant tenant;
-
         public TenantsController(SiteBuilderDbContext context, ITenantService service)
         {
             _context = context;
-            tenant = new Tenant();
-            tenant = service.GetCurrentTenant();
         }
 
         // GET: Tenants
         public async Task<IActionResult> Index()
         {
-            HttpContext.Session.SetObjectAsJson("Tenant", tenant);
             return View(await _context.Tenants.ToListAsync());
         }
 

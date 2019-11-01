@@ -10,32 +10,24 @@ using SiteBuilder.Core.Models;
 using SiteBuilder.Tenants.Interfaces;
 using SiteBuilder.DataEntity.Models;
 using Microsoft.AspNetCore.Http;
-using SiteBuilder.Core.Helpers;
+using SiteBuilder.Tenants.Helpers;
 
 namespace SiteBuilder.Core.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static Tenant tenant;
-
         public HomeController(ILogger<HomeController> logger, ITenantService service)
         {
             _logger = logger;
-
-            tenant = new Tenant();
-            tenant = service.GetCurrentTenant();
         }
-
         public IActionResult Index()
         {
-            HttpContext.Session.SetObjectAsJson("Tenant", tenant);
             return View();
         }
-
         public IActionResult Privacy()
         {
-            return View(tenant);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
