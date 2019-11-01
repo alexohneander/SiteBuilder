@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SiteBuilder.Core.Helpers;
 using SiteBuilder.DataEntity;
 using SiteBuilder.DataEntity.Models;
-using SiteBuilder.Tenants.Interfaces;
 
 namespace SiteBuilder.Core.Controllers
 {
     public class TenantsController : Controller
     {
         private readonly SiteBuilderDbContext _context;
-        public TenantsController(SiteBuilderDbContext context, ITenantService service)
+
+        public TenantsController(SiteBuilderDbContext context)
         {
             _context = context;
         }

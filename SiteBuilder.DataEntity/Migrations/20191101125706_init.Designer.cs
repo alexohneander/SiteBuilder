@@ -9,8 +9,8 @@ using SiteBuilder.DataEntity;
 namespace SiteBuilder.DataEntity.Migrations
 {
     [DbContext(typeof(SiteBuilderDbContext))]
-    [Migration("20191031165457_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20191101125706_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,7 @@ namespace SiteBuilder.DataEntity.Migrations
                     b.Property<bool>("Online")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("TenantId1")
+                    b.Property<Guid>("TenantId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -44,7 +41,8 @@ namespace SiteBuilder.DataEntity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId1");
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("SiteSettings");
                 });
@@ -94,8 +92,10 @@ namespace SiteBuilder.DataEntity.Migrations
             modelBuilder.Entity("SiteBuilder.DataEntity.Models.SiteSettings", b =>
                 {
                     b.HasOne("SiteBuilder.DataEntity.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId1");
+                        .WithOne("SiteSettings")
+                        .HasForeignKey("SiteBuilder.DataEntity.Models.SiteSettings", "TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SiteBuilder.DataEntity.Models.User", b =>

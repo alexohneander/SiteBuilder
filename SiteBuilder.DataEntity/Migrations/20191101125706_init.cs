@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteBuilder.DataEntity.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,18 +29,17 @@ namespace SiteBuilder.DataEntity.Migrations
                     Description = table.Column<string>(nullable: true),
                     Index = table.Column<bool>(nullable: false),
                     Online = table.Column<bool>(nullable: false),
-                    TenantId = table.Column<int>(nullable: false),
-                    TenantId1 = table.Column<Guid>(nullable: true)
+                    TenantId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SiteSettings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SiteSettings_Tenants_TenantId1",
-                        column: x => x.TenantId1,
+                        name: "FK_SiteSettings_Tenants_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "TenantId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,9 +64,10 @@ namespace SiteBuilder.DataEntity.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SiteSettings_TenantId1",
+                name: "IX_SiteSettings_TenantId",
                 table: "SiteSettings",
-                column: "TenantId1");
+                column: "TenantId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_TenantId1",

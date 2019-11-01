@@ -39,7 +39,8 @@ namespace SiteBuilder.DataEntity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("SiteSettings");
                 });
@@ -89,8 +90,8 @@ namespace SiteBuilder.DataEntity.Migrations
             modelBuilder.Entity("SiteBuilder.DataEntity.Models.SiteSettings", b =>
                 {
                     b.HasOne("SiteBuilder.DataEntity.Models.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
+                        .WithOne("SiteSettings")
+                        .HasForeignKey("SiteBuilder.DataEntity.Models.SiteSettings", "TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

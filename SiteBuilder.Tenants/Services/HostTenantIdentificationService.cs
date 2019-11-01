@@ -33,13 +33,8 @@ namespace SiteBuilder.Tenants.Services
 
         public Tenant GetCurrentTenant(HttpContext context)
         {
-            if (!this._tenants.Tenants.TryGetValue(context.Request.Host.Host, out string tenantName))
-            {
-                tenantName = this._tenants.Default;
-            }
-
-            // Get Tenant by name
-            Tenant tenant = TenantHelper.GetAllTenants().Where(t => t.Name == tenantName).FirstOrDefault();
+            // Get Tenant by Domain
+            Tenant tenant = TenantHelper.GetAllTenants().Where(t => t.Domain == context.Request.Host.Host).FirstOrDefault();
 
             return tenant;
         }
