@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Hosting;
+using SiteBuilder.DataEntity;
 using SiteBuilder.Tenants.Interfaces;
 using SiteBuilder.Tenants.Services;
 
@@ -29,12 +31,16 @@ namespace SiteBuilder.Core
         {
             services.AddHttpContextAccessor();
 
+            // Add Tenant Service
             services.AddScoped<ITenantService, TenantService>();
             services.AddSingleton<ITenantIdentificationService, HostTenantIdentificationService>();
 
-            services.AddControllersWithViews();
+            services.AddDbContext<SiteBuilderDbContext>();
 
-            
+            services.AddSession();
+
+            // Add MVC
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +62,7 @@ namespace SiteBuilder.Core
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
