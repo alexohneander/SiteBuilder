@@ -17,6 +17,9 @@ using SiteBuilder.Tenants.Services;
 using SiteBuilder.Tenants.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SiteBuilder.Core.Middleware;
+using SiteBuilder.DataEntity.Models;
 
 namespace SiteBuilder.Core
 {
@@ -45,11 +48,10 @@ namespace SiteBuilder.Core
             // Add MVC
             services.AddControllersWithViews();
 
-            //services.AddDbContext<SiteBuilderDbContext>(options =>
-            //   options.UseSqlite(
-            //       Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<SiteBuilderDbContext>();
+            services.AddIdentity<User, IdentityRole>()
+                // services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<SiteBuilderDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -78,10 +80,13 @@ namespace SiteBuilder.Core
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Backend/Account/Login";
-                options.AccessDeniedPath = "/Backend/Account/AccessDenied";
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            // Email Service
+            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

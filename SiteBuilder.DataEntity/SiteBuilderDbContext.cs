@@ -14,6 +14,7 @@ namespace SiteBuilder.DataEntity
         public DbSet<User> Users { get; set; }
         public DbSet<SiteSettings> SiteSettings { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
                 => options.UseSqlite("Data Source=sitebuilder.db");
 

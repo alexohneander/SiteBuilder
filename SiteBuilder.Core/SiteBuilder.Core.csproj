@@ -33,7 +33,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SiteBuilder.DataEntity\SiteBuilder.DataEntity.csproj" />
+    <ProjectReference Include="..\SiteBuilder.Identity\SiteBuilder.Identity.csproj" />
     <ProjectReference Include="..\SiteBuilder.Tenants\SiteBuilder.Tenants.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\Modules\" />
+  </ItemGroup>
+
+  <Target Name="backend-app" BeforeTargets="ComputeFilesToPublish">
+    <Exec Command="npm install" WorkingDirectory="backend-app"></Exec>
+    <Exec Command="npm run build" WorkingDirectory="backend-app"></Exec>
+  </Target>
 
 </Project>

@@ -1,8 +1,38 @@
-﻿<html>
-<head>
-    <title>Login - SiteBuilder</title>
-</head>
-<body>
+﻿@using Microsoft.AspNetCore.Identity
+@using SiteBuilder.DataEntity.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
-</body>
-</html>
+@{
+    Layout = "_Backend";
+}
+
+<form id="login">
+    <p>
+        <label>Email</label>
+        <input type="text" placeholder="Enter your email" name="email" v-model="Email" />
+        <span class="invalid-input" v-show="InvalidEmail">Invalid Email</span>
+    </p>
+
+    <p>
+        <label>Password</label>
+        <input type="password" name="password" current-password="" placeholder="Password" v-model="Password" />
+    </p>
+
+    <div id="form-buttons">
+        <button type="button" class="success" ref="SubmitButton" v-bind:disabled="isSubmitDisabled" v-on:click="SubmitForm">Submit Form</button>
+    </div>
+</form>
+
+
+@*<environment include="Development">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="~/js/login.js" type="module" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="~/js/login.min.js" type="module" asp-append-version="true"></script>
+    </environment>*@
+

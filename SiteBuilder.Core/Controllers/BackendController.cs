@@ -14,11 +14,5 @@ namespace SiteBuilder.Core.Controllers
         {
             return View();
         }
-
-        [Route("/Backend/Account/Login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
     }
 }
